@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ExtraConstraints.Fody</id>
+    <version>$version$</version>
+    <title>ExtraConstraints.Fody</title>
+    <authors>Simon Cropp</authors>
+    <owners>Simon Cropp</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://code.google.com/p/extraconstraints/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Extra type constraints for Enum and Delegate.</description>
+    <summary />
+    <language>en-AU</language>
+    <tags>Type, Constraint, Enum, Delegate, ILWeaving, Fody, Cecil</tags>
+  </metadata>
+</package>
