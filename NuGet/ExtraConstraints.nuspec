@@ -7,7 +7,7 @@
     <authors>Simon Cropp</authors>
     <owners>Simon Cropp</owners>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
-    <projectUrl>http://code.google.com/p/extraconstraints/</projectUrl>
+    <projectUrl>http://github.com/SimonCropp/ExtraConstraints</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Extra type constraints for Enum and Delegate.</description>
     <summary />
