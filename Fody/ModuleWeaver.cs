@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 
@@ -16,13 +17,9 @@ public class ModuleWeaver
 
     public void Execute()
     {
-        var allTypesFinder = new AllTypesFinder
-                                 {
-                                     ModuleDefinition = ModuleDefinition,
-                                 };
-        allTypesFinder.Execute();
+        var allTypes = ModuleDefinition.GetTypes().Where(x => x.IsClass).ToList();
         var genericParameterProcessor = new GenericParameterProcessor(ModuleDefinition);
-        foreach (var typeDefinition in allTypesFinder.AllTypes)
+        foreach (var typeDefinition in allTypes)
         {
             genericParameterProcessor.Process(typeDefinition);
             foreach (var methodDefinition in typeDefinition.Methods)
@@ -32,12 +29,12 @@ public class ModuleWeaver
         }
 
 
-        RemoveAttributesTypes();
+        RemoveAttributesTypes(allTypes);
     }
 
-    void RemoveAttributesTypes()
+    void RemoveAttributesTypes(List<TypeDefinition> allTypes)
     {
-        foreach (var typeDefinition in ModuleDefinition.Types
+        foreach (var typeDefinition in allTypes
             .Where(x =>
                    x.Name == "EnumConstraintAttribute" ||
                    x.Name == "DelegateConstraintAttribute").ToList())
