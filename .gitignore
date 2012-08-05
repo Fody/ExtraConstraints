@@ -41,6 +41,8 @@ local.properties
 *.user
 *.sln.docstates
 
+NuGetBuild
+
 # Build results
 [Dd]ebug/
 [Rr]elease/
