@@ -16,7 +16,8 @@ Facilitates adding constraints for Enum and Delegate to types and methods.
         public void MethodWithEnumConstraint<[EnumConstraint] T>()
         {
         }
-    }
+    } 
+	
 
 ### What gets compiled
 
