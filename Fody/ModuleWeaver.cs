@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 
-public class ModuleWeaver
+public partial class ModuleWeaver
 {
     public Action<string> LogInfo { get; set; }
     public Action<string> LogWarning { get; set; }
@@ -30,6 +30,7 @@ public class ModuleWeaver
 
 
         RemoveAttributesTypes(allTypes);
+        RemoveReference();
     }
 
     void RemoveAttributesTypes(List<TypeDefinition> allTypes)

@@ -46,8 +46,12 @@
     <Compile Include="ClassWithMethodDelegateConstraint.cs" />
     <Compile Include="ClassWithTypeDelegateConstraint.cs" />
     <Compile Include="ClassWithTypeEnumConstraint.cs" />
-    <Compile Include="DelegateConstraintAttribute.cs" />
-    <Compile Include="EnumConstraintAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExtraConstraints\ExtraConstraints.csproj">
+      <Project>{E0C34BCC-C09E-4389-AB6A-903098068797}</Project>
+      <Name>ExtraConstraints</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
