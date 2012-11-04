@@ -12,6 +12,7 @@
 *.pidb
 *.ncrunchproject
 *.ncrunchsolution
+NuGetBuild
 
 # Build results
 [Dd]ebug/
