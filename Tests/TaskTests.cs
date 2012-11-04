@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -40,6 +41,11 @@ public class TaskTests
     {
         var instance = assembly.GetInstance("ClassWithMethodEnumConstraint");
         instance.Method<AttributeTargets>();
+    }
+    [Test]
+    public void NoReferencs()
+    {
+        Assert.IsFalse(assembly.GetReferencedAssemblies().Any(x => x.Name == "ExtraConstraints"));
     }
 
     [Test]
