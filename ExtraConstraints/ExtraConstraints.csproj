@@ -43,6 +43,8 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="key.snk" />
+    <None Include="FodyWeavers.xml" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
@@ -52,4 +54,5 @@
     <Compile Include="EnumConstraintAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(ProjectPath)\..\..\Tools\Fody\Fody.targets" />
 </Project>
