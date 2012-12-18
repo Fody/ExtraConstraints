@@ -44,7 +44,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="key.snk" />
     <None Include="FodyWeavers.xml" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CommonAssemblyInfo.cs">
