@@ -1,27 +1,40 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using Mono.Cecil;
 using NUnit.Framework;
 
 [TestFixture]
 public class TaskTests
 {
-    string projectPath;
     Assembly assembly;
+    string beforeAssemblyPath;
+    string afterAssemblyPath;
 
     public  TaskTests()
     {
-        projectPath = @"AssemblyToProcess\AssemblyToProcess.csproj";
+        beforeAssemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
 #if (!DEBUG)
-        projectPath = projectPath.Replace("Debug", "Release");
-#endif
-    }
 
-    [TestFixtureSetUp]
-    public void Setup()
-    {
-        var weaverHelper = new WeaverHelper(projectPath);
-        assembly = weaverHelper.Assembly;
+        beforeAssemblyPath = beforeAssemblyPath.Replace("Debug", "Release");
+#endif
+
+        afterAssemblyPath = beforeAssemblyPath.Replace(".dll", "2.dll");
+        File.Copy(beforeAssemblyPath, afterAssemblyPath, true);
+
+        var moduleDefinition = ModuleDefinition.ReadModule(afterAssemblyPath, new ReaderParameters
+        {
+        });
+        var weavingTask = new ModuleWeaver
+        {
+            ModuleDefinition = moduleDefinition,
+        };
+
+        weavingTask.Execute();
+        moduleDefinition.Write(afterAssemblyPath);
+
+        assembly = Assembly.LoadFile(afterAssemblyPath);
     }
 
 
@@ -111,7 +124,7 @@ public class TaskTests
     [Test]
     public void PeVerify()
     {
-        Verifier.Verify(assembly.CodeBase.Remove(0, 8));
+        Verifier.Verify(beforeAssemblyPath,afterAssemblyPath);
     }
 #endif
 
