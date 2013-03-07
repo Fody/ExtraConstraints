@@ -37,9 +37,8 @@ public class TaskTests
         assembly = Assembly.LoadFile(afterAssemblyPath);
     }
 
-
     [Test]
-    public void WithBadMethodEnumConstraint()
+    public void MethodEnumAttributeShouldTHrowWhenPassedANonEnum()
     {
         var exception = Try(() =>
                                 {
@@ -50,19 +49,40 @@ public class TaskTests
     }
 
     [Test]
-    public void WithMethodEnumConstraint()
+    public void MethodWithEnumAttribyteShouldBeCallable()
     {
         var instance = assembly.GetInstance("ClassWithMethodEnumConstraint");
         instance.Method<AttributeTargets>();
     }
+
+	[Test]
+	public void MethodWithEnumAttributeShouldHaveDelegateConstraint()
+	{
+		var genericParameterConstraints = assembly.GetType("ClassWithMethodEnumConstraint")
+			.GetMethods()
+			.First(x => x.Name == "Method")
+			.GetGenericArguments();
+		Assert.AreEqual(genericParameterConstraints.First().BaseType, typeof(Enum));
+	}
+
+	[Test]
+	public void InterfaceMethodWithEnumAttributeShouldHaveDelegateConstraint()
+	{
+		var genericParameterConstraints = assembly.GetType("InterfaceWithMethodEnumConstraint")
+			.GetMethods()
+			.First(x => x.Name == "Method")
+			.GetGenericArguments();
+		Assert.AreEqual(genericParameterConstraints.First().BaseType, typeof(Enum));
+	}
+
     [Test]
-    public void NoReferencs()
+	public void ReferenceToExtraConstraintsShouldBeRemoved()
     {
         Assert.IsFalse(assembly.GetReferencedAssemblies().Any(x => x.Name == "ExtraConstraints"));
     }
 
     [Test]
-    public void WithBadMethodDelegateConstraint()
+    public void MethodDelegateAttributeShouldThrowWhenPassedANonDeletegate()
     {
         var exception = Try(() =>
                                 {
@@ -71,40 +91,87 @@ public class TaskTests
                                 });
         Assert.AreEqual("The type 'string' cannot be used as type parameter 'T' in the generic type or method 'ClassWithMethodDelegateConstraint.Method<T>()'. There is no implicit reference conversion from 'string' to 'System.Delegate'.", exception.Message);
     }
+
     [Test]
-    public void WithMethodDelegateConstraint()
+    public void MethodWithDelegateAttributeShouldBeCallable()
     {
         var instance = assembly.GetInstance("ClassWithMethodDelegateConstraint");
         instance.Method<Action>();
     }
 
+	[Test]
+	public void MethodWithDelegateAttributeShouldHaveDelegateConstraint()
+	{
+		var genericParameterConstraints = assembly.GetType("ClassWithMethodDelegateConstraint")
+			.GetMethods()
+			.First(x => x.Name == "Method")
+			.GetGenericArguments();
+		Assert.AreEqual(genericParameterConstraints.First().BaseType, typeof(Delegate));
+	}
+
+	[Test]
+	public void InterfaceMethodWithDelegateAttributeShouldHaveDelegateConstraint()
+	{
+		var genericParameterConstraints = assembly.GetType("InterfaceWithMethodDelegateConstraint")
+			.GetMethods()
+			.First(x => x.Name == "Method")
+			.GetGenericArguments();
+		Assert.AreEqual(genericParameterConstraints.First().BaseType, typeof(Delegate));
+	}
+
     [Test]
-    public void WithBadTypeEnumConstraint()
+    public void ClassWithEnumAttributeShouldThrowWhenPassedANonEnum()
     {
-        var exception = Try(() =>
-                                {
-                                    var instance = assembly.GetInstance<string>("ClassWithTypeEnumConstraint");
-                                });
+        var exception = Try(() => {assembly.GetInstance<string>("ClassWithTypeEnumConstraint");});
         Assert.AreEqual("GenericArguments[0], 'System.String', on 'ClassWithTypeEnumConstraint`1[T]' violates the constraint of type 'T'.", exception.Message);
     }
 
     [Test]
-    public void WithTypeEnumConstraint()
+    public void ClassWithEnumAttributeShouldBeCallable()
     {
         assembly.GetInstance<AttributeTargets>("ClassWithTypeEnumConstraint");
     }
 
     [Test]
-    public void WithBadTypeDelegateConstraint()
+    public void ClassWithEnumAttributeShouldHaveEnumConstraint()
+    {
+	    var genericParameterConstraints = assembly.GetType("ClassWithTypeEnumConstraint`1").GetGenericArguments();
+	    Assert.AreEqual(genericParameterConstraints.First().BaseType, typeof (Enum));
+    }
+
+    [Test]
+    public void InterfaceWithEnumAttributeShouldHaveEnumConstraint()
+    {
+	    var genericParameterConstraints = assembly.GetType("InterfaceWithTypeEnumConstraint`1").GetGenericArguments();
+	    Assert.AreEqual(genericParameterConstraints.First().BaseType, typeof (Enum));
+    }
+
+	[Test]
+    public void ClassWithDelegateAttributeShouldThrowWhenPassedNonDelegate()
     {
         var exception = Try(() => assembly.GetInstance<string>("ClassWithTypeDelegateConstraint"));
         Assert.AreEqual("GenericArguments[0], 'System.String', on 'ClassWithTypeDelegateConstraint`1[T]' violates the constraint of type 'T'.", exception.Message);
     }
+
     [Test]
-    public void WithTypeDelegateConstraint()
+    public void ClassWithDelegateAttributeShouldBeCallable()
     {
         assembly.GetInstance<Action>("ClassWithTypeDelegateConstraint");
     }
+
+	[Test]
+	public void ClassWithDelegateAttributeShouldHaveDelegateConstraint()
+	{
+		var genericParameterConstraints = assembly.GetType("ClassWithTypeDelegateConstraint`1").GetGenericArguments();
+		Assert.AreEqual(genericParameterConstraints.First().BaseType, typeof(Delegate));
+	}
+
+	[Test]
+	public void InterfaceWithDelegateAttributeShouldHaveDelegateConstraint()
+	{
+		var genericParameterConstraints = assembly.GetType("InterfaceWithTypeDelegateConstraint`1").GetGenericArguments();
+		Assert.AreEqual(genericParameterConstraints.First().BaseType, typeof(Delegate));
+	}
 
     static Exception Try(Action action)
     {

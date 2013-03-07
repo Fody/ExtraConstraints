@@ -43,9 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassWithMethodEnumConstraint.cs" />
+    <Compile Include="InterfaceWithMethodEnumConstraint.cs" />
     <Compile Include="ClassWithMethodDelegateConstraint.cs" />
     <Compile Include="ClassWithTypeDelegateConstraint.cs" />
     <Compile Include="ClassWithTypeEnumConstraint.cs" />
+    <Compile Include="InterfaceWithMethodDelegateConstraint.cs" />
+    <Compile Include="InterfaceWithTypeDelegateConstraint.cs" />
+    <Compile Include="InterfaceWithTypeEnumConstraint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExtraConstraints\ExtraConstraints.csproj">
