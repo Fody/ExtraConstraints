@@ -4,7 +4,14 @@ Facilitates adding constraints for Enum and Delegate to types and methods.
 
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
-## Nuget package http://nuget.org/packages/ExtraConstraints.Fody 
+## Nuget 
+
+Nuget package http://nuget.org/packages/ExtraConstraints.Fody 
+
+To Install from the Nuget Package Manager Console 
+    
+    PM> Install-Package ExtraConstraints.Fody
+
 
 ### Your Code
 
