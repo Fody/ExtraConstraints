@@ -46,3 +46,10 @@ To Install from the Nuget Package Manager Console
 Inspired by [Jon Skeets](http://msmvps.com/blogs/jon_skeet)  blog post [Generic constraints for enums and delegates](http://msmvps.com/blogs/jon_skeet/archive/2009/09/10/generic-constraints-for-enums-and-delegates.aspx).
 
 Based manly on code from [Jb Evains](http://evain.net/blog/) post [ Constraining generic constraints](http://evain.net/blog/articles/2012/01/13/constraining-generic-constraints)
+
+## Icon
+
+Icon courtesy of [The Noun Project](http://thenounproject.com)
+
+
+
