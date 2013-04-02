@@ -49,7 +49,6 @@ Based manly on code from [Jb Evains](http://evain.net/blog/) post [ Constraining
 
 ## Icon
 
-Icon courtesy of [The Noun Project](http://thenounproject.com)
-
+<a href="http://thenounproject.com/noun/straightjacket/#icon-No7600" target="_blank">Straightjacket</a> designed by <a href="http://thenounproject.com/Luis" target="_blank">Luis Prado</a> from The Noun Project
 
 
