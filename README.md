@@ -1,5 +1,7 @@
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
+![Icon](https://raw.github.com/Fody/ExtraConstraints/master/Icons/package_icon.png)
+
 Facilitates adding constraints for Enum and Delegate to types and methods.
 
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
