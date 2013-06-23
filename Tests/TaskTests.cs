@@ -38,7 +38,7 @@ public class TaskTests
     }
 
     [Test]
-    public void MethodEnumAttributeShouldTHrowWhenPassedANonEnum()
+    public void MethodEnumAttributeShouldThrowWhenPassedANonEnum()
     {
         var exception = Try(() =>
                                 {
@@ -49,7 +49,7 @@ public class TaskTests
     }
 
     [Test]
-    public void MethodWithEnumAttribyteShouldBeCallable()
+    public void MethodWithEnumAttributeShouldBeCallable()
     {
         var instance = assembly.GetInstance("ClassWithMethodEnumConstraint");
         instance.Method<AttributeTargets>();
@@ -82,7 +82,7 @@ public class TaskTests
     }
 
     [Test]
-    public void MethodDelegateAttributeShouldThrowWhenPassedANonDeletegate()
+    public void MethodDelegateAttributeShouldThrowWhenPassedANonDelegate()
     {
         var exception = Try(() =>
                                 {
