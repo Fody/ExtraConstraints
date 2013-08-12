@@ -7,3 +7,11 @@ public class ClassWithMethodDelegateConstraint
         
     }
 }
+
+public class ClassWithMethodDelegateConstraint2
+{
+    public void Method<[DelegateConstraint(typeof(System.Func<int>))] T>()
+    {
+
+    }
+}
