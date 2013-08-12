@@ -1,4 +1,5 @@
-﻿using ExtraConstraints;
+﻿using System;
+using ExtraConstraints;
 
 public class ClassWithMethodDelegateConstraint 
 {
@@ -10,7 +11,7 @@ public class ClassWithMethodDelegateConstraint
 
 public class ClassWithMethodDelegateConstraint2
 {
-    public void Method<[DelegateConstraint(typeof(System.Func<int>))] T>()
+    public void Method<[DelegateConstraint(typeof(Func<int>))] T>()
     {
 
     }

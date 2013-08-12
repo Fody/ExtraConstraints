@@ -1,3 +1,4 @@
+using System;
 using ExtraConstraints;
 
 public interface InterfaceWithMethodEnumConstraint
@@ -7,5 +8,5 @@ public interface InterfaceWithMethodEnumConstraint
 
 public interface InterfaceWithMethodEnumConstraint2
 {
-    void Method<[EnumConstraint(typeof(System.ConsoleColor))] T>();
+    void Method<[EnumConstraint(typeof(ConsoleColor))] T>();
 }

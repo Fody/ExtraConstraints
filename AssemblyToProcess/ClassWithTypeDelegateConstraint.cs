@@ -1,9 +1,10 @@
-﻿using ExtraConstraints;
+﻿using System;
+using ExtraConstraints;
 
 public class ClassWithTypeDelegateConstraint<[DelegateConstraint] T>
 {
 }
 
-public class ClassWithTypeDelegateConstraint2<[DelegateConstraint(typeof(System.Func<int>))] T>
+public class ClassWithTypeDelegateConstraint2<[DelegateConstraint(typeof(Func<int>))] T>
 {
 }

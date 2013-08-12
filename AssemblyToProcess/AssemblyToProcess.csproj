@@ -42,14 +42,30 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClassWithMethodEnumConstraint.cs" />
-    <Compile Include="InterfaceWithMethodEnumConstraint.cs" />
-    <Compile Include="ClassWithMethodDelegateConstraint.cs" />
-    <Compile Include="ClassWithTypeDelegateConstraint.cs" />
-    <Compile Include="ClassWithTypeEnumConstraint.cs" />
-    <Compile Include="InterfaceWithMethodDelegateConstraint.cs" />
-    <Compile Include="InterfaceWithTypeDelegateConstraint.cs" />
-    <Compile Include="InterfaceWithTypeEnumConstraint.cs" />
+    <Compile Include="ClassWithMethodDelegateConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassWithMethodEnumConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassWithTypeDelegateConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClassWithTypeEnumConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceWithMethodDelegateConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceWithMethodEnumConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceWithTypeDelegateConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfaceWithTypeEnumConstraint.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExtraConstraints\ExtraConstraints.csproj">

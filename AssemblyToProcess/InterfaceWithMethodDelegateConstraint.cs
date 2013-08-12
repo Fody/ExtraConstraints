@@ -1,4 +1,5 @@
-﻿using ExtraConstraints;
+﻿using System;
+using ExtraConstraints;
 
 public interface InterfaceWithMethodDelegateConstraint
 {
@@ -7,5 +8,5 @@ public interface InterfaceWithMethodDelegateConstraint
 
 public interface InterfaceWithMethodDelegateConstraint2
 {
-    void Method<[DelegateConstraint(typeof(System.Func<int>))] T>();
+    void Method<[DelegateConstraint(typeof(Func<int>))] T>();
 }

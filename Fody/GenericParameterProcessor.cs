@@ -1,20 +1,14 @@
 using System.Linq;
 using Mono.Cecil;
-using System;
 
 public class GenericParameterProcessor
 {
     AssemblyNameReference msCorLib;
-    TypeDefinition delegateTypeDefinition;
-    TypeDefinition enumTypeDefinition;
-    TypeDefinition objectTypeDefinition;
 
     public GenericParameterProcessor(ModuleDefinition moduleDefinition)
     {
-        msCorLib = moduleDefinition.AssemblyReferences.First(a => a.Name == "mscorlib");
-        delegateTypeDefinition = new TypeReference("System", "Delegate", moduleDefinition, msCorLib).Resolve();
-        enumTypeDefinition = new TypeReference("System", "Enum", moduleDefinition, msCorLib).Resolve();
-        objectTypeDefinition = new TypeReference("System", "Object", moduleDefinition, msCorLib).Resolve();
+        msCorLib = moduleDefinition.AssemblyReferences
+                                   .First(a => a.Name == "mscorlib");
     }
 
     public void Process(IGenericParameterProvider provider)
@@ -23,7 +17,8 @@ public class GenericParameterProcessor
         {
             return;
         }
-        foreach (var parameter in provider.GenericParameters)
+        foreach (var parameter in provider.GenericParameters
+                                          .Where(x => x.HasCustomAttributes))
         {
             Process(parameter);
         }
@@ -31,11 +26,6 @@ public class GenericParameterProcessor
 
     void Process(GenericParameter parameter)
     {
-        if (!parameter.HasCustomAttributes)
-        {
-            return;
-        }
-
         var hasDelegateConstraint = false;
         var hasEnumConstraint = false;
         var attributes = parameter.CustomAttributes;
@@ -49,8 +39,6 @@ public class GenericParameterProcessor
                 parameter.Constraints.Clear();
 
                 var typeReference = GetDelegateType(attribute, parameter);
-                if (!IsDelegateType(typeReference))
-                    throw new WeavingException(string.Format("The type {0} is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute", typeReference.FullName));
 
                 parameter.Constraints.Add(typeReference);
                 attributes.RemoveAt(i--);
@@ -62,8 +50,6 @@ public class GenericParameterProcessor
                 parameter.Constraints.Clear();
 
                 var typeReference = GetEnumType(attribute, parameter);
-                if (!IsEnumType(typeReference))
-                    throw new WeavingException(string.Format("The type {0} is not an enum type. Only enum types are permitted in an EnumConstraintAttribute", typeReference.FullName));
 
                 parameter.Constraints.Add(typeReference);
                 attributes.RemoveAt(i--);
@@ -71,7 +57,7 @@ public class GenericParameterProcessor
         }
         if (hasDelegateConstraint && hasEnumConstraint)
         {
-            throw new WeavingException("Can not contain both [EnumConstraint] and [DelegateConstraint].");
+            throw new WeavingException("Cannot contain both [EnumConstraint] and [DelegateConstraint].");
         }
     }
 
@@ -85,46 +71,39 @@ public class GenericParameterProcessor
         return attribute.AttributeType.Name == "EnumConstraintAttribute";
     }
 
-    TypeReference GetEnumType(CustomAttribute attribute, GenericParameter parameter)
-    {
-        if (IsEnumConstraintAttribute(attribute))
-            return attribute.HasConstructorArguments ? (attribute.ConstructorArguments[0].Value as TypeReference) : CreateConstraint("System", "Enum", parameter);
-        else
-            return null; // Should never happen
-    }
-
-    bool IsEnumType(TypeReference typeReference)
-    {
-        var definition = typeReference.Resolve();
-        if (definition.FullName == enumTypeDefinition.FullName)
-            return true;
-        if (definition.FullName == objectTypeDefinition.FullName)
-            return false;
-        
-        return IsEnumType(definition.BaseType);
-    }
-
     bool IsDelegateConstraintAttribute(CustomAttribute attribute)
     {
         return attribute.AttributeType.Name == "DelegateConstraintAttribute";
     }
 
+    TypeReference GetEnumType(CustomAttribute attribute, GenericParameter parameter)
+    {
+        if (attribute.HasConstructorArguments)
+        {
+            var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
+            if (!typeReference.IsEnumType())
+            {
+                var message = string.Format("The type '{0}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.", typeReference.FullName);
+                throw new WeavingException(message);
+            }
+            return typeReference;
+        }
+        return CreateConstraint("System", "Enum", parameter);
+    }
+
     TypeReference GetDelegateType(CustomAttribute attribute, GenericParameter parameter)
     {
-        if (IsDelegateConstraintAttribute(attribute))
-            return attribute.HasConstructorArguments ? (attribute.ConstructorArguments[0].Value as TypeReference) : CreateConstraint("System", "Delegate", parameter);
-        else
-            return null; // Should never happen
+        if (attribute.HasConstructorArguments)
+        {
+            var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
+            if (!typeReference.IsDelegateType())
+            {
+                var message = string.Format("The type '{0}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.", typeReference.FullName);
+                throw new WeavingException(message);
+            }
+            return typeReference;
+        }
+        return CreateConstraint("System", "Delegate", parameter);
     }
 
-    bool IsDelegateType(TypeReference typeReference)
-    {
-        var definition = typeReference.Resolve();
-        if (definition.FullName == delegateTypeDefinition.FullName)
-            return true;
-        if (definition.FullName == objectTypeDefinition.FullName)
-            return false;
-
-        return IsDelegateType(definition.BaseType);
-    }
 }

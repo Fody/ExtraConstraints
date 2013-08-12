@@ -9,4 +9,16 @@ public static class CecilExtensions
     {
         return attributes.Any(attribute => attribute.Constructor.DeclaringType.Name == attributeName);
     }
+
+    public static bool IsDelegateType(this TypeReference typeReference)
+    {
+        var definition = typeReference.Resolve();
+        return definition.BaseType.FullName == "System.MulticastDelegate";
+    }
+
+    public static bool IsEnumType(this TypeReference typeReference)
+    {
+        var definition = typeReference.Resolve();
+        return definition.BaseType.FullName == "System.Enum";
+    }
 }

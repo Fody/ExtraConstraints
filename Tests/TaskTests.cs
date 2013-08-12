@@ -12,7 +12,7 @@ public class TaskTests
     string beforeAssemblyPath;
     string afterAssemblyPath;
 
-    public  TaskTests()
+    public TaskTests()
     {
         beforeAssemblyPath = Path.GetFullPath(@"..\..\..\AssemblyToProcess\bin\Debug\AssemblyToProcess.dll");
 #if (!DEBUG)
@@ -54,7 +54,7 @@ public class TaskTests
         var exception = Try(() =>
         {
             var instance = assembly.GetInstance("ClassWithMethodEnumConstraint2");
-            instance.Method<System.ConsoleKey>();
+            instance.Method<ConsoleKey>();
         });
         Assert.AreEqual("The type 'System.ConsoleKey' cannot be used as type parameter 'T' in the generic type or method 'ClassWithMethodEnumConstraint2.Method<T>()'. There is no boxing conversion from 'System.ConsoleKey' to 'System.ConsoleColor'.", exception.Message);
     }
