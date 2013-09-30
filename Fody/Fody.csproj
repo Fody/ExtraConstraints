@@ -42,6 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="Fody.targets" />
+    <None Include="NugetAssets\ExtraConstraints.nuspec" />
+    <None Include="NugetAssets\install.ps1" />
+    <None Include="NugetAssets\uninstall.ps1" />
     <None Include="packages.config" />
     <Reference Include="Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -73,7 +76,28 @@
     <Compile Include="ReferenceCleaner.cs" />
     <Compile Include="WeavingException.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExtraConstraints\ExtraConstraints.csproj">
+      <Project>{e0c34bcc-c09e-4389-ab6a-903098068797}</Project>
+      <Name>ExtraConstraints</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(ProjectPath)\..\..\Tools\Pepita\PepitaGet.targets" />
   <Import Project="Fody.targets" />
+  <UsingTask TaskName="PepitaPackage.WeavingTask" AssemblyFile="$(SolutionDir)Tools\Pepita\PepitaPackage.dll" />
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <FilesToDelete Include="$(SolutionDir)NuGetBuild\**\*.*" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <MakeDir Directories="$(SolutionDir)NuGetBuild" />
+    <Copy SourceFiles="$(SolutionDir)ExtraConstraints\bin\$(ConfigurationName)\ExtraConstraints.dll" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp7+win8+MonoAndroid16+MonoTouch40" />
+    <Copy SourceFiles="$(SolutionDir)ExtraConstraints\bin\$(ConfigurationName)\ExtraConstraints.xml" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\portable-net4+sl4+wp7+win8+MonoAndroid16+MonoTouch40" />
+    <Copy SourceFiles="$(ProjectDir)NuGetAssets\ExtraConstraints.nuspec" DestinationFolder="$(SolutionDir)NuGetBuild" />
+    <Copy SourceFiles="$(ProjectDir)NuGetAssets\install.ps1" DestinationFolder="$(SolutionDir)NuGetBuild\Tools" />
+    <Copy SourceFiles="$(ProjectDir)NuGetAssets\uninstall.ps1" DestinationFolder="$(SolutionDir)NuGetBuild\Tools" />
+    <Copy SourceFiles="$(OutputPath)ExtraConstraints.Fody.dll" DestinationFolder="$(SolutionDir)NuGetBuild" />
+    <Copy SourceFiles="$(OutputPath)ExtraConstraints.Fody.pdb" DestinationFolder="$(SolutionDir)NuGetBuild" />
+    <PepitaPackage.WeavingTask NuGetBuildDirectory="$(SolutionDir)NuGetBuild" MetadataAssembly="$(OutputPath)ExtraConstraints.Fody.dll" />
+  </Target>
 </Project>
