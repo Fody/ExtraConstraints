@@ -1,22 +1,26 @@
-using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 
 public class GenericParameterProcessor
 {
-    IAssemblyResolver assemblyResolver;
-    TypeDefinition enumType;
-    TypeDefinition delegateType;
+    AssemblyNameReference corLib;
 
-    public GenericParameterProcessor(IAssemblyResolver assemblyResolver)
+    public GenericParameterProcessor(ModuleDefinition moduleDefinition)
     {
-        this.assemblyResolver = assemblyResolver;
-        var coreTypes = new List<TypeDefinition>();
-        AppendTypes("mscorlib", coreTypes);
-        AppendTypes("System.Runtime", coreTypes);
-        enumType = coreTypes.First(x => x.Name == "Enum");
-        delegateType = coreTypes.First(x => x.Name == "Delegate");
+        corLib = moduleDefinition.AssemblyReferences
+                                   .FirstOrDefault(a => a.Name == "mscorlib");
+
+        if (corLib == null || moduleDefinition.AssemblyResolver.Resolve(corLib).MainModule.Types.All(x => x.Name != "Enum"))
+        {
+            corLib = moduleDefinition.AssemblyReferences
+                               .FirstOrDefault(a => a.Name == "System.Runtime");
+            if (corLib == null)
+            {
+                throw new WeavingException("Could not find constraint types in `mscorlib` or `System.Runtime`.");
+            }
+        }
     }
+
 
     public void Process(IGenericParameterProvider provider)
     {
@@ -28,15 +32,6 @@ public class GenericParameterProcessor
                                           .Where(x => x.HasCustomAttributes))
         {
             Process(parameter);
-        }
-    }
-
-    void AppendTypes(string name, List<TypeDefinition> coreTypes)
-    {
-        var definition = assemblyResolver.Resolve(name);
-        if (definition != null)
-        {
-            coreTypes.AddRange(definition.MainModule.Types);
         }
     }
 
@@ -78,9 +73,9 @@ public class GenericParameterProcessor
         }
     }
 
-    TypeReference CreateConstraint(TypeDefinition typeDefinition, GenericParameter parameter)
+    TypeReference CreateConstraint(string @namespace, string name, GenericParameter parameter)
     {
-        return new TypeReference(typeDefinition.Namespace, typeDefinition.Name, parameter.Module, typeDefinition.Module, false);
+        return new TypeReference(@namespace, name, parameter.Module, corLib, false);
     }
 
     bool IsEnumConstraintAttribute(CustomAttribute attribute)
@@ -105,7 +100,7 @@ public class GenericParameterProcessor
             }
             return typeReference;
         }
-        return CreateConstraint(enumType, parameter);
+        return CreateConstraint("System", "Enum", parameter);
     }
 
     TypeReference GetDelegateType(CustomAttribute attribute, GenericParameter parameter)
@@ -120,7 +115,7 @@ public class GenericParameterProcessor
             }
             return typeReference;
         }
-        return CreateConstraint(delegateType, parameter);
+        return CreateConstraint("System", "Delegate", parameter);
     }
 
 }

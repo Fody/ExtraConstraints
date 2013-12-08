@@ -21,7 +21,7 @@ public partial class ModuleWeaver
         var allTypes = ModuleDefinition.GetTypes()
                                        .Where(x => x.IsClass || x.IsInterface)
                                        .ToList();
-        var genericParameterProcessor = new GenericParameterProcessor(ModuleDefinition.AssemblyResolver);
+        var genericParameterProcessor = new GenericParameterProcessor(ModuleDefinition);
         foreach (var typeDefinition in allTypes)
         {
             genericParameterProcessor.Process(typeDefinition);
