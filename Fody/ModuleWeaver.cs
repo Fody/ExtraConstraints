@@ -5,6 +5,7 @@ using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
+
     public Action<string> LogInfo { get; set; }
     public Action<string> LogWarning { get; set; }
     public ModuleDefinition ModuleDefinition { get; set; }
@@ -20,7 +21,7 @@ public partial class ModuleWeaver
         var allTypes = ModuleDefinition.GetTypes()
                                        .Where(x => x.IsClass || x.IsInterface)
                                        .ToList();
-        var genericParameterProcessor = new GenericParameterProcessor(ModuleDefinition);
+        var genericParameterProcessor = new GenericParameterProcessor(ModuleDefinition.AssemblyResolver);
         foreach (var typeDefinition in allTypes)
         {
             genericParameterProcessor.Process(typeDefinition);

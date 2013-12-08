@@ -1,14 +1,21 @@
+using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 
 public class GenericParameterProcessor
 {
-    AssemblyNameReference msCorLib;
+    IAssemblyResolver assemblyResolver;
+    TypeDefinition enumType;
+    TypeDefinition delegateType;
 
-    public GenericParameterProcessor(ModuleDefinition moduleDefinition)
+    public GenericParameterProcessor(IAssemblyResolver assemblyResolver)
     {
-        msCorLib = moduleDefinition.AssemblyReferences
-                                   .First(a => a.Name == "mscorlib");
+        this.assemblyResolver = assemblyResolver;
+        var coreTypes = new List<TypeDefinition>();
+        AppendTypes("mscorlib", coreTypes);
+        AppendTypes("System.Runtime", coreTypes);
+        enumType = coreTypes.First(x => x.Name == "Enum");
+        delegateType = coreTypes.First(x => x.Name == "Delegate");
     }
 
     public void Process(IGenericParameterProvider provider)
@@ -23,6 +30,16 @@ public class GenericParameterProcessor
             Process(parameter);
         }
     }
+
+    void AppendTypes(string name, List<TypeDefinition> coreTypes)
+    {
+        var definition = assemblyResolver.Resolve(name);
+        if (definition != null)
+        {
+            coreTypes.AddRange(definition.MainModule.Types);
+        }
+    }
+
 
     void Process(GenericParameter parameter)
     {
@@ -61,9 +78,9 @@ public class GenericParameterProcessor
         }
     }
 
-    TypeReference CreateConstraint(string @namespace, string name, GenericParameter parameter)
+    TypeReference CreateConstraint(TypeDefinition typeDefinition, GenericParameter parameter)
     {
-        return new TypeReference(@namespace, name, parameter.Module, msCorLib, false);
+        return new TypeReference(typeDefinition.Namespace, typeDefinition.Name, parameter.Module, typeDefinition.Module, false);
     }
 
     bool IsEnumConstraintAttribute(CustomAttribute attribute)
@@ -88,7 +105,7 @@ public class GenericParameterProcessor
             }
             return typeReference;
         }
-        return CreateConstraint("System", "Enum", parameter);
+        return CreateConstraint(enumType, parameter);
     }
 
     TypeReference GetDelegateType(CustomAttribute attribute, GenericParameter parameter)
@@ -103,7 +120,7 @@ public class GenericParameterProcessor
             }
             return typeReference;
         }
-        return CreateConstraint("System", "Delegate", parameter);
+        return CreateConstraint(delegateType, parameter);
     }
 
 }
