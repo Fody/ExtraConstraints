@@ -184,14 +184,14 @@ public class TaskTests
     [Test]
     public void ClassWithEnumAttributeShouldThrowWhenPassedANonEnum()
     {
-        var exception = Try(() => {assembly.GetInstance<string>("ClassWithTypeEnumConstraint");});
+        var exception = Try(() => assembly.GetInstance<string>("ClassWithTypeEnumConstraint"));
         Assert.AreEqual("GenericArguments[0], 'System.String', on 'ClassWithTypeEnumConstraint`1[T]' violates the constraint of type 'T'.", exception.Message);
     }
 
     [Test]
     public void ClassWithEnumAttributeShouldThrowWhenPassedAnIncompatibleEnum()
     {
-        var exception = Try(() => { assembly.GetInstance<ConsoleKey>("ClassWithTypeEnumConstraint2"); });
+        var exception = Try(() => assembly.GetInstance<ConsoleKey>("ClassWithTypeEnumConstraint2"));
         Assert.AreEqual("GenericArguments[0], 'System.ConsoleKey', on 'ClassWithTypeEnumConstraint2`1[T]' violates the constraint of type 'T'.", exception.Message);
     }
 
