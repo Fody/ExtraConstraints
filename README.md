@@ -19,12 +19,13 @@ To Install from the Nuget Package Manager Console
 
     public class Sample
     {
-        public void MethodWithDelegateConstraint<[DelegateConstraint] T> ()
-        {        
-        }
-        public void MethodWithEnumConstraint<[EnumConstraint] T>()
-        {
-        }
+        public void MethodWithDelegateConstraint<[DelegateConstraint] T> () {...}
+
+        public void MethodWithTypeDelegateConstraint<[DelegateConstraint(typeof(Func<int>))] T> () {...}
+
+        public void MethodWithEnumConstraint<[EnumConstraint] T>() {...}
+
+        public void MethodWithTypeEnumConstraint<[EnumConstraint(typeof(ConsoleColor))] T>() {...}
     } 
 	
 
@@ -32,13 +33,13 @@ To Install from the Nuget Package Manager Console
 
     public class Sample
     {
-        public void MethodWithDelegateConstraint<T>() where T: Delegate
-        {
-        }
+        public void MethodWithDelegateConstraint<T>() where T: Delegate {...}
 
-        public void MethodWithEnumConstraint<T>() where T: struct, Enum
-        {
-        }
+        public void MethodWithTypeDelegateConstraint<T>() where T: Func<int> {...}
+
+        public void MethodWithEnumConstraint<T>() where T: struct, Enum {...}
+
+        public void MethodWithTypeEnumConstraint<T>() where T: struct, ConsoleColor {...}
     }
 
 
