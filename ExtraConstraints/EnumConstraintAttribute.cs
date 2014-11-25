@@ -19,6 +19,7 @@ namespace ExtraConstraints
         /// Constructor.
         /// </summary>
         /// <param name="type">A <see cref="Type"/> representing the type of enum to constrain the generic parameter to</param>.
+        // ReSharper disable once UnusedParameter.Local
         public EnumConstraintAttribute(Type type)
         {
         }

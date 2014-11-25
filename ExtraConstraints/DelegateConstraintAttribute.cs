@@ -21,6 +21,7 @@ namespace ExtraConstraints
         /// Constructor.
         /// </summary>
         /// <param name="type">A <see cref="Type"/> representing the type of delegate to constrain the generic parameter to.</param>
+        // ReSharper disable once UnusedParameter.Local
         public DelegateConstraintAttribute(Type type)
         {
 
