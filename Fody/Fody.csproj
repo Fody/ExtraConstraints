@@ -45,9 +45,8 @@
     <None Include="NugetAssets\ExtraConstraints.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="NugetAssets\FodyWeavers.xml.install.xdt" />
-    <None Include="NugetAssets\FodyWeavers.xml.uninstall.xdt" />
     <None Include="NugetAssets\install.ps" />
+    <None Include="NugetAssets\uninstall.ps" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -100,8 +99,7 @@
     <Copy SourceFiles="$(SolutionDir)ExtraConstraints\bin\$(ConfigurationName)\ExtraConstraints.xml" DestinationFolder="$(SolutionDir)NuGetBuild\Lib\dotnet" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\ExtraConstraints.nuspec" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\install.ps" DestinationFiles="$(SolutionDir)NuGetBuild\Tools\install.ps1" />
-    <Copy SourceFiles="$(ProjectDir)NugetAssets\FodyWeavers.xml.install.xdt" DestinationFolder="$(SolutionDir)NuGetBuild\Content" />
-    <Copy SourceFiles="$(ProjectDir)NugetAssets\FodyWeavers.xml.uninstall.xdt" DestinationFolder="$(SolutionDir)NuGetBuild\Content" />
+    <Copy SourceFiles="$(ProjectDir)NugetAssets\uninstall.ps" DestinationFiles="$(SolutionDir)NuGetBuild\Tools\uninstall.ps1" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\dotnet.targets" DestinationFiles="$(SolutionDir)NuGetBuild\build\dotnet\ExtraConstraints.Fody.targets" />
     <Copy SourceFiles="$(OutputPath)ExtraConstraints.Fody.dll" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(OutputPath)ExtraConstraints.Fody.pdb" DestinationFolder="$(SolutionDir)NuGetBuild" />
