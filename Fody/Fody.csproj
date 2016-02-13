@@ -41,7 +41,6 @@
     <AssemblyOriginatorKeyFile>..\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="NugetAssets\dotnet.targets" />
     <None Include="NugetAssets\ExtraConstraints.Fody.nuspec">
       <SubType>Designer</SubType>
     </None>
@@ -100,7 +99,6 @@
     <Copy SourceFiles="$(ProjectDir)NugetAssets\ExtraConstraints.Fody.nuspec" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\install.ps" DestinationFiles="$(SolutionDir)NuGetBuild\Tools\install.ps1" />
     <Copy SourceFiles="$(ProjectDir)NugetAssets\uninstall.ps" DestinationFiles="$(SolutionDir)NuGetBuild\Tools\uninstall.ps1" />
-    <Copy SourceFiles="$(ProjectDir)NugetAssets\dotnet.targets" DestinationFiles="$(SolutionDir)NuGetBuild\build\dotnet\ExtraConstraints.Fody.targets" />
     <Copy SourceFiles="$(OutputPath)ExtraConstraints.Fody.dll" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <Copy SourceFiles="$(OutputPath)ExtraConstraints.Fody.pdb" DestinationFolder="$(SolutionDir)NuGetBuild" />
     <PepitaPackage.CreatePackageTask NuGetBuildDirectory="$(SolutionDir)NuGetBuild" MetadataAssembly="$(OutputPath)ExtraConstraints.Fody.dll" />
