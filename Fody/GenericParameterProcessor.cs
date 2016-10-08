@@ -95,7 +95,7 @@ public class GenericParameterProcessor
             var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
             if (!typeReference.IsEnumType())
             {
-                var message = string.Format("The type '{0}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.", typeReference.FullName);
+                var message = $"The type '{typeReference.FullName}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.";
                 throw new WeavingException(message);
             }
             return typeReference;
@@ -110,7 +110,7 @@ public class GenericParameterProcessor
             var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
             if (!typeReference.IsDelegateType())
             {
-                var message = string.Format("The type '{0}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.", typeReference.FullName);
+                var message = $"The type '{typeReference.FullName}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.";
                 throw new WeavingException(message);
             }
             return typeReference;
