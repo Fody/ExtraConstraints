@@ -1,9 +1,17 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using ExtraConstraints.Fody;
 using Mono.Cecil;
 
 public class GenericParameterProcessor
 {
-    AssemblyNameReference corLib;
+	const string EnumConstraintAttribute = "EnumConstraintAttribute";
+	const string DelegateConstraintAttribute = "DelegateConstraintAttribute";
+
+    private readonly AssemblyNameReference corLib;
+	private readonly IDictionary<string, Func<GenericParameter, CustomAttribute, TypeReference>> ConstraintTypes;
+	private readonly IDictionary<string, GenericParameterAttributes> ParameterAttributes;
 
     public GenericParameterProcessor(ModuleDefinition moduleDefinition)
     {
@@ -19,76 +27,88 @@ public class GenericParameterProcessor
                 throw new WeavingException("Could not find constraint types in `mscorlib` or `System.Runtime`.");
             }
         }
+
+		ConstraintTypes = new Dictionary<string, Func<GenericParameter, CustomAttribute, TypeReference>>
+		{
+			{ EnumConstraintAttribute, (param, attr) => GetEnumType(attr, param, corLib) },
+			{ DelegateConstraintAttribute, (param, attr) => GetDelegateType(attr, param, corLib) }
+		};
+
+		ParameterAttributes = new Dictionary<string, GenericParameterAttributes>
+		{
+			{ EnumConstraintAttribute, GenericParameterAttributes.NonVariant | GenericParameterAttributes.NotNullableValueTypeConstraint },
+			{ DelegateConstraintAttribute, GenericParameterAttributes.NonVariant }
+		};
     }
 
+	public void ProcessType(TypeDefinition type)
+	{
+		Process(type, type);
+	}
 
-    public void Process(IGenericParameterProvider provider)
+	public void ProcessMethod(MethodDefinition method)
+	{
+		Process(method, method.DeclaringType);
+	}
+
+	void Process(IGenericParameterProvider item, TypeDefinition nestedTypeRoot)
+	{
+		if (!item.HasGenericParameters) return;
+
+		foreach (var parameter in item.GenericParameters)
+		{
+			foreach (var pair in ConstraintTypes)
+			{
+				var attribute = FindAndRemoveGenericParameterAttribute(parameter, pair.Key);
+				if (attribute == null) continue;
+
+				var typeReference = pair.Value(parameter, attribute);
+				var paramAttributes = ParameterAttributes[pair.Key];
+				AddGenericTypeConstraint(parameter, typeReference, paramAttributes);
+
+				var genericParameters = nestedTypeRoot
+					.RecurseTree(t => t.NestedTypes, false)
+					.Where(t => t.HasGenericParameters)
+					.SelectMany(t => t.GenericParameters)
+					.Where(p => p.Name == parameter.Name);
+
+				foreach (var genericParameter in genericParameters)
+				{
+					AddGenericTypeConstraint(genericParameter, typeReference, paramAttributes);
+				}
+			}
+		}
+	}
+
+	CustomAttribute FindAndRemoveGenericParameterAttribute(GenericParameter parameter, string customAttributeName)
+	{
+		var attributes = parameter.CustomAttributes;
+		for (var i = 0; i < attributes.Count; i++)
+		{
+			var attribute = attributes[i];
+			if (attribute.AttributeType.Name == customAttributeName)
+			{
+				attributes.RemoveAt(i--);
+				return attribute;
+			}
+		}
+
+		return null;
+	}
+
+	void AddGenericTypeConstraint(GenericParameter parameter, TypeReference typeReference, GenericParameterAttributes genericParameterAttributes)
+	{
+		parameter.Attributes = genericParameterAttributes;
+		parameter.Constraints.Clear();
+		parameter.Constraints.Add(typeReference);
+	}
+
+	static TypeReference CreateConstraint(string @namespace, string name, GenericParameter parameter, AssemblyNameReference corlib)
     {
-        if (!provider.HasGenericParameters)
-        {
-            return;
-        }
-        foreach (var parameter in provider.GenericParameters
-                                          .Where(x => x.HasCustomAttributes))
-        {
-            Process(parameter);
-        }
+		return new TypeReference(@namespace, name, parameter.Module, corlib, false);
     }
 
-
-    void Process(GenericParameter parameter)
-    {
-        var hasDelegateConstraint = false;
-        var hasEnumConstraint = false;
-        var attributes = parameter.CustomAttributes;
-        for (var i = 0; i < attributes.Count; i++)
-        {
-            var attribute = attributes[i];
-            if (IsDelegateConstraintAttribute(attribute))
-            {
-                hasDelegateConstraint = true;
-                parameter.Attributes = GenericParameterAttributes.NonVariant;
-                parameter.Constraints.Clear();
-
-                var typeReference = GetDelegateType(attribute, parameter);
-
-                parameter.Constraints.Add(typeReference);
-                attributes.RemoveAt(i--);
-            }
-            else if (IsEnumConstraintAttribute(attribute))
-            {
-                hasEnumConstraint = true;
-                parameter.Attributes = GenericParameterAttributes.NonVariant | GenericParameterAttributes.NotNullableValueTypeConstraint;
-                parameter.Constraints.Clear();
-
-                var typeReference = GetEnumType(attribute, parameter);
-
-                parameter.Constraints.Add(typeReference);
-                attributes.RemoveAt(i--);
-            }
-        }
-        if (hasDelegateConstraint && hasEnumConstraint)
-        {
-            throw new WeavingException("Cannot contain both [EnumConstraint] and [DelegateConstraint].");
-        }
-    }
-
-    TypeReference CreateConstraint(string @namespace, string name, GenericParameter parameter)
-    {
-        return new TypeReference(@namespace, name, parameter.Module, corLib, false);
-    }
-
-    bool IsEnumConstraintAttribute(CustomAttribute attribute)
-    {
-        return attribute.AttributeType.Name == "EnumConstraintAttribute";
-    }
-
-    bool IsDelegateConstraintAttribute(CustomAttribute attribute)
-    {
-        return attribute.AttributeType.Name == "DelegateConstraintAttribute";
-    }
-
-    TypeReference GetEnumType(CustomAttribute attribute, GenericParameter parameter)
+	static TypeReference GetEnumType(CustomAttribute attribute, GenericParameter parameter, AssemblyNameReference corlib)
     {
         if (attribute.HasConstructorArguments)
         {
@@ -100,10 +120,10 @@ public class GenericParameterProcessor
             }
             return typeReference;
         }
-        return CreateConstraint("System", "Enum", parameter);
+        return CreateConstraint("System", "Enum", parameter, corlib);
     }
 
-    TypeReference GetDelegateType(CustomAttribute attribute, GenericParameter parameter)
+    static TypeReference GetDelegateType(CustomAttribute attribute, GenericParameter parameter, AssemblyNameReference corlib)
     {
         if (attribute.HasConstructorArguments)
         {
@@ -115,7 +135,7 @@ public class GenericParameterProcessor
             }
             return typeReference;
         }
-        return CreateConstraint("System", "Delegate", parameter);
+        return CreateConstraint("System", "Delegate", parameter, corlib);
     }
 
 }

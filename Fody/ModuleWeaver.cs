@@ -24,10 +24,10 @@ public partial class ModuleWeaver
         var genericParameterProcessor = new GenericParameterProcessor(ModuleDefinition);
         foreach (var typeDefinition in allTypes)
         {
-            genericParameterProcessor.Process(typeDefinition);
+            genericParameterProcessor.ProcessType(typeDefinition);
             foreach (var methodDefinition in typeDefinition.Methods)
             {
-                genericParameterProcessor.Process(methodDefinition);
+                genericParameterProcessor.ProcessMethod(methodDefinition);
             }
         }
 
