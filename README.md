@@ -1,3 +1,7 @@
+[![Chat on Gitter](https://img.shields.io/gitter/room/fody/fody.svg?style=flat)](https://gitter.im/Fody)
+[![NuGet Status](http://img.shields.io/nuget/v/ExtraConstraints.Fody.svg?style=flat)](https://www.nuget.org/packages/ExtraConstraints.Fody/)
+
+
 ## This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
 ![Icon](https://raw.github.com/Fody/ExtraConstraints/master/Icons/package_icon.png)
@@ -7,13 +11,12 @@ Facilitates adding constraints for Enum and Delegate to types and methods.
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
 
-[![NuGet Status](https://img.shields.io/gitter/room/fody/fody.svg?style=flat)](https://gitter.im/Fody/Fody)
-
-## The nuget package  [![NuGet Status](http://img.shields.io/nuget/v/ExtraConstraints.Fody.svg?style=flat)](https://www.nuget.org/packages/ExtraConstraints.Fody/)
+## The nuget package
 
 https://nuget.org/packages/ExtraConstraints.Fody/
 
     PM> Install-Package ExtraConstraints.Fody
+
 
 ### Your Code
 
@@ -43,15 +46,13 @@ https://nuget.org/packages/ExtraConstraints.Fody/
     }
 
 
-
 ## Credit 
 
 Inspired by [Jon Skeets](http://msmvps.com/blogs/jon_skeet)  blog post [Generic constraints for enums and delegates](http://msmvps.com/blogs/jon_skeet/archive/2009/09/10/generic-constraints-for-enums-and-delegates.aspx).
 
 Based mainly on code from [Jb Evain](http://evain.net/bio/)'s blog post [Constraining generic constraints](http://evain.net/blog/articles/2012/01/13/constraining-generic-constraints).
 
+
 ## Icon
 
 <a href="http://thenounproject.com/noun/straightjacket/#icon-No7600" target="_blank">Straightjacket</a> designed by <a href="http://thenounproject.com/Luis" target="_blank">Luis Prado</a> from The Noun Project.
-
-
