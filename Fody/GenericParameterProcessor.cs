@@ -4,23 +4,28 @@ using Mono.Cecil;
 public class GenericParameterProcessor
 {
     AssemblyNameReference corLib;
-
+    
     public GenericParameterProcessor(ModuleDefinition moduleDefinition)
     {
-        corLib = moduleDefinition.AssemblyReferences
-                                   .FirstOrDefault(a => a.Name == "mscorlib");
-
-        if (corLib == null || moduleDefinition.AssemblyResolver.Resolve(corLib).MainModule.Types.All(x => x.Name != "Enum"))
-        {
-            corLib = moduleDefinition.AssemblyReferences
-                               .FirstOrDefault(a => a.Name == "System.Runtime");
-            if (corLib == null)
-            {
-                throw new WeavingException("Could not find constraint types in `mscorlib` or `System.Runtime`.");
-            }
-        }
+        TryLoadCorLib(moduleDefinition, "mscorlib", "System.Runtime", "netstandard");
     }
 
+    private void TryLoadCorLib(ModuleDefinition moduleDefinition, params string[] attemptedAssemblies)
+    {
+        foreach (var assemblyName in attemptedAssemblies)
+        {
+            corLib = moduleDefinition.AssemblyReferences.FirstOrDefault(a => a.Name == assemblyName);
+
+            if (corLib == null) continue;
+
+            if (moduleDefinition.AssemblyResolver.Resolve(corLib).MainModule.Types.Any(t => t.FullName == "System.Enum"))
+            {
+                return;
+            }
+        }
+
+        throw new WeavingException($"Could not find constraint types in {string.Join(" or ", attemptedAssemblies.Select(s => $"`{s}`"))}.");
+    }
 
     public void Process(IGenericParameterProvider provider)
     {
