@@ -1,11 +1,11 @@
 ﻿using System;
 using ExtraConstraints;
 
-public class ClassWithMethodDelegateConstraint 
+public class ClassWithMethodDelegateConstraint
 {
     public void Method<[DelegateConstraint] T> ()
     {
-        
+
     }
 }
 

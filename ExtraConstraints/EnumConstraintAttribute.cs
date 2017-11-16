@@ -23,6 +23,5 @@ namespace ExtraConstraints
         public EnumConstraintAttribute(Type type)
         {
         }
-
     }
 }

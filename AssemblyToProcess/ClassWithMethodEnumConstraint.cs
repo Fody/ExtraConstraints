@@ -1,12 +1,12 @@
 using System;
 using ExtraConstraints;
 
-public class ClassWithMethodEnumConstraint 
+public class ClassWithMethodEnumConstraint
 {
-	public void Method<[EnumConstraint] T> ()
-	{
-        
-	}
+    public void Method<[EnumConstraint] T>()
+    {
+
+    }
 }
 
 public class ClassWithMethodEnumConstraint2

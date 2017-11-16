@@ -2,7 +2,6 @@ using System;
 
 namespace ExtraConstraints
 {
-
     /// <summary>
     /// Adds an <see cref="Delegate"/> constraint to a <see cref="AttributeTargets.GenericParameter"/>.
     /// </summary>
@@ -16,7 +15,7 @@ namespace ExtraConstraints
         public DelegateConstraintAttribute()
         {
         }
-        
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -24,8 +23,6 @@ namespace ExtraConstraints
         // ReSharper disable once UnusedParameter.Local
         public DelegateConstraintAttribute(Type type)
         {
-
         }
-        
     }
 }

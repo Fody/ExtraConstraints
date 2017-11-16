@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 
-public partial class ModuleWeaver 
+public partial class ModuleWeaver
 {
-    
     public void RemoveReference()
     {
         var referenceToRemove = ModuleDefinition.AssemblyReferences.FirstOrDefault(x => x.Name == "ExtraConstraints");

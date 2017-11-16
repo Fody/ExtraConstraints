@@ -2,7 +2,6 @@ using Mono.Cecil;
 
 public static class CecilExtensions
 {
-
     public static bool IsDelegateType(this TypeReference typeReference)
     {
         var definition = typeReference.Resolve();

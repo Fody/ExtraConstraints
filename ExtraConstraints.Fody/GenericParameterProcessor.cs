@@ -4,7 +4,7 @@ using Mono.Cecil;
 public class GenericParameterProcessor
 {
     AssemblyNameReference corLib;
-    
+
     public GenericParameterProcessor(ModuleDefinition moduleDefinition)
     {
         TryLoadCorLib(moduleDefinition, "mscorlib", "System.Runtime", "netstandard");
@@ -16,9 +16,17 @@ public class GenericParameterProcessor
         {
             corLib = moduleDefinition.AssemblyReferences.FirstOrDefault(a => a.Name == assemblyName);
 
-            if (corLib == null) continue;
+            if (corLib == null)
+            {
+                continue;
+            }
 
-            if (moduleDefinition.AssemblyResolver.Resolve(corLib).MainModule.Types.Any(t => t.FullName == "System.Enum"))
+            var assemblyDefinition = moduleDefinition.AssemblyResolver.Resolve(corLib);
+            if (assemblyDefinition.MainModule.Types.Any(t => t.FullName == "System.Enum"))
+            {
+                return;
+            }
+            if (assemblyDefinition.MainModule.ExportedTypes.Any(t => t.FullName == "System.Enum"))
             {
                 return;
             }
@@ -39,7 +47,6 @@ public class GenericParameterProcessor
             Process(parameter);
         }
     }
-
 
     void Process(GenericParameter parameter)
     {
@@ -98,12 +105,12 @@ public class GenericParameterProcessor
         if (attribute.HasConstructorArguments)
         {
             var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
-            if (!typeReference.IsEnumType())
+            if (typeReference.IsEnumType())
             {
-                var message = $"The type '{typeReference.FullName}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.";
-                throw new WeavingException(message);
+                return typeReference;
             }
-            return typeReference;
+            var message = $"The type '{typeReference.FullName}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.";
+            throw new WeavingException(message);
         }
         return CreateConstraint("System", "Enum", parameter);
     }
@@ -113,12 +120,12 @@ public class GenericParameterProcessor
         if (attribute.HasConstructorArguments)
         {
             var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
-            if (!typeReference.IsDelegateType())
+            if (typeReference.IsDelegateType())
             {
-                var message = $"The type '{typeReference.FullName}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.";
-                throw new WeavingException(message);
+                return typeReference;
             }
-            return typeReference;
+            var message = $"The type '{typeReference.FullName}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.";
+            throw new WeavingException(message);
         }
         return CreateConstraint("System", "Delegate", parameter);
     }

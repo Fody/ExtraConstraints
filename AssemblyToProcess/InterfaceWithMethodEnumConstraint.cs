@@ -3,7 +3,7 @@ using ExtraConstraints;
 
 public interface InterfaceWithMethodEnumConstraint
 {
-	void Method<[EnumConstraint] T>();
+    void Method<[EnumConstraint] T>();
 }
 
 public interface InterfaceWithMethodEnumConstraint2

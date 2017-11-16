@@ -3,7 +3,7 @@ using ExtraConstraints;
 
 public interface InterfaceWithMethodDelegateConstraint
 {
-	void Method<[DelegateConstraint] T>();
+    void Method<[DelegateConstraint] T>();
 }
 
 public interface InterfaceWithMethodDelegateConstraint2

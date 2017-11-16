@@ -1,77 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7DEC4E2D-F872-434E-A267-0BAD65299950}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AssemblyToProcess</RootNamespace>
-    <AssemblyName>AssemblyToProcess</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>3</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <TargetFrameworks>net452;netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <ProjectReference Include="..\ExtraConstraints\ExtraConstraints.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ClassWithMethodDelegateConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ClassWithMethodEnumConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ClassWithTypeDelegateConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ClassWithTypeEnumConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InterfaceWithMethodDelegateConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InterfaceWithMethodEnumConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InterfaceWithTypeDelegateConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InterfaceWithTypeEnumConstraint.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExtraConstraints\ExtraConstraints.csproj">
-      <Project>{E0C34BCC-C09E-4389-AB6A-903098068797}</Project>
-      <Name>ExtraConstraints</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

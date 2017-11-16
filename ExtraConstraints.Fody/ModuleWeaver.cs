@@ -5,7 +5,6 @@ using Mono.Cecil;
 
 public partial class ModuleWeaver
 {
-
     public Action<string> LogInfo { get; set; }
     public Action<string> LogWarning { get; set; }
     public ModuleDefinition ModuleDefinition { get; set; }
