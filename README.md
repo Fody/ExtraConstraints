@@ -11,11 +11,33 @@ Facilitates adding constraints for Enum and Delegate to types and methods.
 [Introduction to Fody](http://github.com/Fody/Fody/wiki/SampleUsage)
 
 
-## The nuget package
+## Usage
 
-https://nuget.org/packages/ExtraConstraints.Fody/
+See also [Fody usage](https://github.com/Fody/Fody#usage).
 
-    PM> Install-Package ExtraConstraints.Fody
+
+### NuGet installation
+
+Install the [ExtraConstraints.Fody NuGet package](https://nuget.org/packages/ExtraConstraints.Fody/) and update the [Fody NuGet package](https://nuget.org/packages/Fody/):
+
+```
+PM> Install-Package ExtraConstraints.Fody
+PM> Update-Package Fody
+```
+
+The `Update-Package Fody` is required since NuGet always defaults to the oldest, and most buggy, version of any dependency.
+
+
+### Add to FodyWeavers.xml
+
+Add `<ExtraConstraints/>` to [FodyWeavers.xml](https://github.com/Fody/Fody#add-fodyweaversxml)
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<Weavers>
+  <ExtraConstraints/>
+</Weavers>
+```
 
 
 ### Your Code
