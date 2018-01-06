@@ -1,18 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 14.0.22823.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtraConstraints.Fody", "ExtraConstraints.Fody\ExtraConstraints.Fody.csproj", "{C3578A7B-09A6-4444-9383-0DEAFA4958BD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E0C34BCC-C09E-4389-AB6A-903098068797} = {E0C34BCC-C09E-4389-AB6A-903098068797}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{5A86453B-96FB-4B6E-A283-225BB9F753D3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyToProcess", "AssemblyToProcess\AssemblyToProcess.csproj", "{7DEC4E2D-F872-434E-A267-0BAD65299950}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtraConstraints", "ExtraConstraints\ExtraConstraints.csproj", "{E0C34BCC-C09E-4389-AB6A-903098068797}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C39382DC-C19A-48C8-BD59-C7C0C954B626}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

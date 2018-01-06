@@ -1,38 +1,17 @@
 using System.Linq;
+using Fody;
 using Mono.Cecil;
 
 public class GenericParameterProcessor
 {
-    AssemblyNameReference corLib;
+    TypeReference delegateType;
+    TypeReference enumType;
 
-    public GenericParameterProcessor(ModuleDefinition moduleDefinition)
+    public GenericParameterProcessor(ModuleWeaver moduleWeaver)
     {
-        TryLoadCorLib(moduleDefinition, "mscorlib", "System.Runtime", "netstandard");
-    }
-
-    private void TryLoadCorLib(ModuleDefinition moduleDefinition, params string[] attemptedAssemblies)
-    {
-        foreach (var assemblyName in attemptedAssemblies)
-        {
-            corLib = moduleDefinition.AssemblyReferences.FirstOrDefault(a => a.Name == assemblyName);
-
-            if (corLib == null)
-            {
-                continue;
-            }
-
-            var assemblyDefinition = moduleDefinition.AssemblyResolver.Resolve(corLib);
-            if (assemblyDefinition.MainModule.Types.Any(t => t.FullName == "System.Enum"))
-            {
-                return;
-            }
-            if (assemblyDefinition.MainModule.ExportedTypes.Any(t => t.FullName == "System.Enum"))
-            {
-                return;
-            }
-        }
-
-        throw new WeavingException($"Could not find constraint types in {string.Join(" or ", attemptedAssemblies.Select(s => $"`{s}`"))}.");
+        var module = moduleWeaver.ModuleDefinition;
+        delegateType = module.ImportReference(moduleWeaver.FindType("System.Delegate"));
+        enumType = module.ImportReference(moduleWeaver.FindType("System.Enum"));
     }
 
     public void Process(IGenericParameterProvider provider)
@@ -62,7 +41,7 @@ public class GenericParameterProcessor
                 parameter.Attributes = GenericParameterAttributes.NonVariant;
                 parameter.Constraints.Clear();
 
-                var typeReference = GetDelegateType(attribute, parameter);
+                var typeReference = GetDelegateType(attribute);
 
                 parameter.Constraints.Add(typeReference);
                 attributes.RemoveAt(i--);
@@ -73,7 +52,7 @@ public class GenericParameterProcessor
                 parameter.Attributes = GenericParameterAttributes.NonVariant | GenericParameterAttributes.NotNullableValueTypeConstraint;
                 parameter.Constraints.Clear();
 
-                var typeReference = GetEnumType(attribute, parameter);
+                var typeReference = GetEnumType(attribute);
 
                 parameter.Constraints.Add(typeReference);
                 attributes.RemoveAt(i--);
@@ -83,11 +62,6 @@ public class GenericParameterProcessor
         {
             throw new WeavingException("Cannot contain both [EnumConstraint] and [DelegateConstraint].");
         }
-    }
-
-    TypeReference CreateConstraint(string @namespace, string name, GenericParameter parameter)
-    {
-        return new TypeReference(@namespace, name, parameter.Module, corLib, false);
     }
 
     bool IsEnumConstraintAttribute(CustomAttribute attribute)
@@ -100,7 +74,7 @@ public class GenericParameterProcessor
         return attribute.AttributeType.Name == "DelegateConstraintAttribute";
     }
 
-    TypeReference GetEnumType(CustomAttribute attribute, GenericParameter parameter)
+    TypeReference GetEnumType(CustomAttribute attribute)
     {
         if (attribute.HasConstructorArguments)
         {
@@ -112,10 +86,10 @@ public class GenericParameterProcessor
             var message = $"The type '{typeReference.FullName}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.";
             throw new WeavingException(message);
         }
-        return CreateConstraint("System", "Enum", parameter);
+        return enumType;
     }
 
-    TypeReference GetDelegateType(CustomAttribute attribute, GenericParameter parameter)
+    TypeReference GetDelegateType(CustomAttribute attribute)
     {
         if (attribute.HasConstructorArguments)
         {
@@ -127,7 +101,6 @@ public class GenericParameterProcessor
             var message = $"The type '{typeReference.FullName}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.";
             throw new WeavingException(message);
         }
-        return CreateConstraint("System", "Delegate", parameter);
+        return delegateType;
     }
-
 }

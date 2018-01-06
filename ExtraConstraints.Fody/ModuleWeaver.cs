@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Fody;
 using Mono.Cecil;
 
-public partial class ModuleWeaver
+public partial class ModuleWeaver: BaseModuleWeaver
 {
-    public Action<string> LogInfo { get; set; }
-    public Action<string> LogWarning { get; set; }
-    public ModuleDefinition ModuleDefinition { get; set; }
-
-    public ModuleWeaver()
-    {
-        LogInfo = s => { };
-        LogWarning = s => { };
-    }
-
-    public void Execute()
+    public override void Execute()
     {
         var allTypes = ModuleDefinition.GetTypes()
                                        .Where(x => x.IsClass || x.IsInterface)
                                        .ToList();
-        var genericParameterProcessor = new GenericParameterProcessor(ModuleDefinition);
+        var genericParameterProcessor = new GenericParameterProcessor(this);
         foreach (var typeDefinition in allTypes)
         {
             genericParameterProcessor.Process(typeDefinition);
@@ -31,7 +21,13 @@ public partial class ModuleWeaver
         }
 
         RemoveAttributesTypes(allTypes);
-        RemoveReference();
+    }
+
+    public override IEnumerable<string> GetAssembliesForScanning()
+    {
+        yield return "mscorlib";
+        yield return "System.Runtime";
+        yield return "netstandard";
     }
 
     void RemoveAttributesTypes(List<TypeDefinition> allTypes)
@@ -44,4 +40,6 @@ public partial class ModuleWeaver
             ModuleDefinition.Types.Remove(typeDefinition);
         }
     }
+
+    public override bool ShouldCleanReference => true;
 }
