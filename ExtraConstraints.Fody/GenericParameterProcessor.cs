@@ -76,31 +76,33 @@ public class GenericParameterProcessor
 
     TypeReference GetEnumType(CustomAttribute attribute)
     {
-        if (attribute.HasConstructorArguments)
+        if (!attribute.HasConstructorArguments)
         {
-            var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
-            if (typeReference.IsEnumType())
-            {
-                return typeReference;
-            }
-            var message = $"The type '{typeReference.FullName}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.";
-            throw new WeavingException(message);
+            return enumType;
         }
-        return enumType;
+
+        var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
+        if (typeReference.IsEnumType())
+        {
+            return typeReference;
+        }
+        var message = $"The type '{typeReference.FullName}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.";
+        throw new WeavingException(message);
     }
 
     TypeReference GetDelegateType(CustomAttribute attribute)
     {
-        if (attribute.HasConstructorArguments)
+        if (!attribute.HasConstructorArguments)
         {
-            var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
-            if (typeReference.IsDelegateType())
-            {
-                return typeReference;
-            }
-            var message = $"The type '{typeReference.FullName}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.";
-            throw new WeavingException(message);
+            return delegateType;
         }
-        return delegateType;
+
+        var typeReference = (TypeReference) attribute.ConstructorArguments[0].Value;
+        if (typeReference.IsDelegateType())
+        {
+            return typeReference;
+        }
+        var message = $"The type '{typeReference.FullName}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.";
+        throw new WeavingException(message);
     }
 }
