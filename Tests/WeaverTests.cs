@@ -13,8 +13,7 @@ public class WeaverTests
     static WeaverTests()
     {
         var weavingTask = new ModuleWeaver();
-        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll",
-            ignoreCodes:new []{ "0x801318F3" });
+        testResult = weavingTask.ExecuteTestRun("AssemblyToProcess.dll");
         assembly = testResult.Assembly;
     }
 
