@@ -3,6 +3,6 @@
   <PropertyGroup>
     <PackageVersion>1.12.2</PackageVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 </Project>

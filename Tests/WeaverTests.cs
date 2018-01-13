@@ -22,7 +22,7 @@ public class WeaverTests
     {
         var exception = Try(() =>
         {
-            var instance = assembly.GetInstance("ClassWithMethodEnumConstraint");
+            var instance = testResult.GetInstance("ClassWithMethodEnumConstraint");
             instance.Method<string>();
         });
         Assert.Equal("The type 'string' must be a non-nullable value type in order to use it as parameter 'T' in the generic type or method 'ClassWithMethodEnumConstraint.Method<T>()'", exception.Message);
@@ -33,7 +33,7 @@ public class WeaverTests
     {
         var exception = Try(() =>
         {
-            var instance = assembly.GetInstance("ClassWithMethodEnumConstraint2");
+            var instance = testResult.GetInstance("ClassWithMethodEnumConstraint2");
             instance.Method<ConsoleKey>();
         });
         Assert.Equal("The type 'System.ConsoleKey' cannot be used as type parameter 'T' in the generic type or method 'ClassWithMethodEnumConstraint2.Method<T>()'. There is no boxing conversion from 'System.ConsoleKey' to 'System.ConsoleColor'.", exception.Message);
@@ -42,7 +42,7 @@ public class WeaverTests
     [Fact]
     public void MethodWithEnumAttributeShouldBeCallable()
     {
-        var instance = assembly.GetInstance("ClassWithMethodEnumConstraint");
+        var instance = testResult.GetInstance("ClassWithMethodEnumConstraint");
         instance.Method<AttributeTargets>();
     }
 
@@ -97,7 +97,7 @@ public class WeaverTests
     {
         var exception = Try(() =>
         {
-            var instance = assembly.GetInstance("ClassWithMethodDelegateConstraint");
+            var instance = testResult.GetInstance("ClassWithMethodDelegateConstraint");
             instance.Method<string>();
         });
         Assert.Equal("The type 'string' cannot be used as type parameter 'T' in the generic type or method 'ClassWithMethodDelegateConstraint.Method<T>()'. There is no implicit reference conversion from 'string' to 'System.Delegate'.", exception.Message);
@@ -108,7 +108,7 @@ public class WeaverTests
     {
         var exception = Try(() =>
         {
-            var instance = assembly.GetInstance("ClassWithMethodDelegateConstraint2");
+            var instance = testResult.GetInstance("ClassWithMethodDelegateConstraint2");
             instance.Method<Func<string>>();
         });
         Assert.Equal("The type 'System.Func<string>' cannot be used as type parameter 'T' in the generic type or method 'ClassWithMethodDelegateConstraint2.Method<T>()'. There is no implicit reference conversion from 'System.Func<string>' to 'System.Func<int>'.", exception.Message);
@@ -117,7 +117,7 @@ public class WeaverTests
     [Fact]
     public void MethodWithDelegateAttributeShouldBeCallable()
     {
-        var instance = assembly.GetInstance("ClassWithMethodDelegateConstraint");
+        var instance = testResult.GetInstance("ClassWithMethodDelegateConstraint");
         instance.Method<Action>();
     }
 
