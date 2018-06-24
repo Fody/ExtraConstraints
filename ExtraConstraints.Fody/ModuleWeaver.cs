@@ -3,7 +3,7 @@ using System.Linq;
 using Fody;
 using Mono.Cecil;
 
-public partial class ModuleWeaver: BaseModuleWeaver
+public class ModuleWeaver: BaseModuleWeaver
 {
     public override void Execute()
     {
@@ -25,9 +25,7 @@ public partial class ModuleWeaver: BaseModuleWeaver
 
     public override IEnumerable<string> GetAssembliesForScanning()
     {
-        yield return "mscorlib";
-        yield return "System.Runtime";
-        yield return "netstandard";
+        return Enumerable.Empty<string>();
     }
 
     void RemoveAttributesTypes(List<TypeDefinition> allTypes)
