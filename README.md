@@ -20,12 +20,12 @@ See also [Fody usage](https://github.com/Fody/Fody#usage).
 
 Install the [ExtraConstraints.Fody NuGet package](https://nuget.org/packages/ExtraConstraints.Fody/) and update the [Fody NuGet package](https://nuget.org/packages/Fody/):
 
-```
+```powershell
+PM> Install-Package Fody
 PM> Install-Package ExtraConstraints.Fody
-PM> Update-Package Fody
 ```
 
-The `Update-Package Fody` is required since NuGet always defaults to the oldest, and most buggy, version of any dependency.
+The `Install-Package Fody` is required since NuGet always defaults to the oldest, and most buggy, version of any dependency.
 
 
 ### Add to FodyWeavers.xml
@@ -42,30 +42,34 @@ Add `<ExtraConstraints/>` to [FodyWeavers.xml](https://github.com/Fody/Fody#add-
 
 ### Your Code
 
-    public class Sample
-    {
-        public void MethodWithDelegateConstraint<[DelegateConstraint] T> () {...}
+```csharp
+public class Sample
+{
+    public void MethodWithDelegateConstraint<[DelegateConstraint] T> () {...}
 
-        public void MethodWithTypeDelegateConstraint<[DelegateConstraint(typeof(Func<int>))] T> () {...}
+    public void MethodWithTypeDelegateConstraint<[DelegateConstraint(typeof(Func<int>))] T> () {...}
 
-        public void MethodWithEnumConstraint<[EnumConstraint] T>() {...}
+    public void MethodWithEnumConstraint<[EnumConstraint] T>() {...}
 
-        public void MethodWithTypeEnumConstraint<[EnumConstraint(typeof(ConsoleColor))] T>() {...}
-    } 
-	
+    public void MethodWithTypeEnumConstraint<[EnumConstraint(typeof(ConsoleColor))] T>() {...}
+}
+```
+
 
 ### What gets compiled
 
-    public class Sample
-    {
-        public void MethodWithDelegateConstraint<T>() where T: Delegate {...}
+```csharp
+public class Sample
+{
+    public void MethodWithDelegateConstraint<T>() where T: Delegate {...}
 
-        public void MethodWithTypeDelegateConstraint<T>() where T: Func<int> {...}
+    public void MethodWithTypeDelegateConstraint<T>() where T: Func<int> {...}
 
-        public void MethodWithEnumConstraint<T>() where T: struct, Enum {...}
+    public void MethodWithEnumConstraint<T>() where T: struct, Enum {...}
 
-        public void MethodWithTypeEnumConstraint<T>() where T: struct, ConsoleColor {...}
-    }
+    public void MethodWithTypeEnumConstraint<T>() where T: struct, ConsoleColor {...}
+}
+```
 
 
 ## Credit 
