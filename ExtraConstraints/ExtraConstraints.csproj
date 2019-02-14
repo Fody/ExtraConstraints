@@ -7,6 +7,7 @@
     <Authors>Simon Cropp</Authors>
     <PackageTags>Type, Constraint, Enum, Delegate, ILWeaving, Fody, Cecil</PackageTags>
     <Description>Extra type constraints for Enum and Delegate.</Description>
+    <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Fody" Version="4.0.2" PrivateAssets="None" />
