@@ -8,9 +8,11 @@
     <PackageTags>Type, Constraint, Enum, Delegate, ILWeaving, Fody, Cecil</PackageTags>
     <Description>Extra type constraints for Enum and Delegate.</Description>
     <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
+    <PackageIconUrl>https://raw.githubusercontent.com/Fody/ExtraConstraints/master/package_icon.png</PackageIconUrl>
+    <PackageProjectUrl>http://github.com/Fody/ExtraConstraints</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Fody" Version="5.0.0-beta.7" PrivateAssets="None" />
-    <PackageReference Include="FodyPackaging" Version="5.0.0-beta.7" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="5.0.0-beta.11" PrivateAssets="None" />
+    <PackageReference Include="FodyPackaging" Version="5.0.0-beta.11" PrivateAssets="All" />
   </ItemGroup>
 </Project>

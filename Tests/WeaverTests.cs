@@ -3,9 +3,10 @@ using System.Linq;
 using System.Reflection;
 using Fody;
 using Xunit;
-#pragma warning disable 618
+using Xunit.Abstractions;
 
-public class WeaverTests
+public class WeaverTests :
+    XunitLoggingBase
 {
     static TestResult testResult;
     static Assembly assembly;
@@ -280,5 +281,10 @@ public class WeaverTests
             return exception;
         }
         return null;
+    }
+
+    public WeaverTests(ITestOutputHelper output) :
+        base(output)
+    {
     }
 }
