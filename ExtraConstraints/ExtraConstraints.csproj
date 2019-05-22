@@ -9,7 +9,7 @@
     <Description>Extra type constraints for Enum and Delegate.</Description>
     <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
     <PackageIconUrl>https://raw.githubusercontent.com/Fody/ExtraConstraints/master/package_icon.png</PackageIconUrl>
-    <PackageProjectUrl>http://github.com/Fody/ExtraConstraints</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Fody/ExtraConstraints</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Fody" Version="5.0.6" PrivateAssets="None" />
