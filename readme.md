@@ -69,13 +69,13 @@ public class Sample
 ```
 
 
-## Credit 
+## Credit
 
-Inspired by [Jon Skeets](http://msmvps.com/blogs/jon_skeet)  blog post [Generic constraints for enums and delegates](http://msmvps.com/blogs/jon_skeet/archive/2009/09/10/generic-constraints-for-enums-and-delegates.aspx).
+Inspired by [Jon Skeets](http://msmvps.com/blogs/jon_skeet) blog post [Generic constraints for enums and delegates](http://msmvps.com/blogs/jon_skeet/archive/2009/09/10/generic-constraints-for-enums-and-delegates.aspx).
 
 Based mainly on code from [Jb Evain](http://evain.net/bio/)'s blog post [Constraining generic constraints](http://evain.net/blog/articles/2012/01/13/constraining-generic-constraints).
 
 
 ## Icon
 
-<a href="http://thenounproject.com/noun/straightjacket/#icon-No7600" target="_blank">Straightjacket</a> designed by <a href="http://thenounproject.com/Luis" target="_blank">Luis Prado</a> from The Noun Project.
+[Straightjacket](https://thenounproject.com/noun/straightjacket/#icon-No7600) designed by [Luis Prado](https://thenounproject.com/Luis) from [The Noun Project](https://thenounproject.com).
