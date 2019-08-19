@@ -43,7 +43,7 @@ public class GenericParameterProcessor
 
                 var typeReference = GetDelegateType(attribute);
 
-                parameter.Constraints.Add(typeReference);
+                parameter.Constraints.Add(new GenericParameterConstraint(typeReference));
                 attributes.RemoveAt(i--);
             }
             else if (IsEnumConstraintAttribute(attribute))
@@ -54,7 +54,7 @@ public class GenericParameterProcessor
 
                 var typeReference = GetEnumType(attribute);
 
-                parameter.Constraints.Add(typeReference);
+                parameter.Constraints.Add(new GenericParameterConstraint(typeReference));
                 attributes.RemoveAt(i--);
             }
         }
