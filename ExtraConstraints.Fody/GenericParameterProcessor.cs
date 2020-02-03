@@ -10,8 +10,8 @@ public class GenericParameterProcessor
     public GenericParameterProcessor(ModuleWeaver moduleWeaver)
     {
         var module = moduleWeaver.ModuleDefinition;
-        delegateType = module.ImportReference(moduleWeaver.FindType("System.Delegate"));
-        enumType = module.ImportReference(moduleWeaver.FindType("System.Enum"));
+        delegateType = module.ImportReference(moduleWeaver.FindTypeDefinition("System.Delegate"));
+        enumType = module.ImportReference(moduleWeaver.FindTypeDefinition("System.Enum"));
     }
 
     public void Process(IGenericParameterProvider provider)
