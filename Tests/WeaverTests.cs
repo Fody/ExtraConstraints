@@ -2,12 +2,9 @@
 using System.Linq;
 using System.Reflection;
 using Fody;
-using VerifyXunit;
 using Xunit;
-using Xunit.Abstractions;
 
-public class WeaverTests :
-    VerifyBase
+public class WeaverTests
 {
     static TestResult testResult;
     static Assembly assembly;
@@ -282,10 +279,5 @@ public class WeaverTests :
             return exception;
         }
         return null;
-    }
-
-    public WeaverTests(ITestOutputHelper output) :
-        base(output)
-    {
     }
 }
