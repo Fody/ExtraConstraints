@@ -64,12 +64,12 @@ public class GenericParameterProcessor
         }
     }
 
-    bool IsEnumConstraintAttribute(CustomAttribute attribute)
+    static bool IsEnumConstraintAttribute(CustomAttribute attribute)
     {
         return attribute.AttributeType.Name == "EnumConstraintAttribute";
     }
 
-    bool IsDelegateConstraintAttribute(CustomAttribute attribute)
+    static bool IsDelegateConstraintAttribute(CustomAttribute attribute)
     {
         return attribute.AttributeType.Name == "DelegateConstraintAttribute";
     }

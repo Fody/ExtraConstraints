@@ -32,8 +32,9 @@ public class ModuleWeaver: BaseModuleWeaver
     {
         foreach (var typeDefinition in allTypes
             .Where(x =>
-                   x.Name == "EnumConstraintAttribute" ||
-                   x.Name == "DelegateConstraintAttribute").ToList())
+                   x.Name is
+                       "EnumConstraintAttribute" or
+                       "DelegateConstraintAttribute").ToList())
         {
             ModuleDefinition.Types.Remove(typeDefinition);
         }
