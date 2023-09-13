@@ -50,7 +50,7 @@ public class WeaverTests
     {
         var genericParameterConstraints = assembly.GetType("ClassWithMethodEnumConstraint")
             .GetMethods()
-            .First(x => x.Name == "Method")
+            .First(_ => _.Name == "Method")
             .GetGenericArguments();
         Assert.Equal(typeof(Enum), genericParameterConstraints.First().BaseType);
     }
@@ -60,7 +60,7 @@ public class WeaverTests
     {
         var genericParameterConstraints = assembly.GetType("ClassWithMethodEnumConstraint2")
             .GetMethods()
-            .First(x => x.Name == "Method")
+            .First(_ => _.Name == "Method")
             .GetGenericArguments();
         Assert.Equal(typeof(ConsoleColor), genericParameterConstraints.First().BaseType);
     }
@@ -70,7 +70,7 @@ public class WeaverTests
     {
         var genericParameterConstraints = assembly.GetType("InterfaceWithMethodEnumConstraint")
             .GetMethods()
-            .First(x => x.Name == "Method")
+            .First(_ => _.Name == "Method")
             .GetGenericArguments();
         Assert.Equal(typeof(Enum), genericParameterConstraints.First().BaseType);
     }
@@ -80,7 +80,7 @@ public class WeaverTests
     {
         var genericParameterConstraints = assembly.GetType("InterfaceWithMethodEnumConstraint2")
             .GetMethods()
-            .First(x => x.Name == "Method")
+            .First(_ => _.Name == "Method")
             .GetGenericArguments();
         Assert.Equal(typeof(ConsoleColor), genericParameterConstraints.First().BaseType);
     }
@@ -88,7 +88,7 @@ public class WeaverTests
     [Fact]
     public void ReferenceToExtraConstraintsShouldBeRemoved()
     {
-        Assert.DoesNotContain(assembly.GetReferencedAssemblies(), x => x.Name == "ExtraConstraints");
+        Assert.DoesNotContain(assembly.GetReferencedAssemblies(), _ => _.Name == "ExtraConstraints");
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class WeaverTests
     {
         var genericParameterConstraints = assembly.GetType("ClassWithMethodDelegateConstraint")
             .GetMethods()
-            .First(x => x.Name == "Method")
+            .First(_ => _.Name == "Method")
             .GetGenericArguments();
         Assert.Equal(typeof(Delegate), genericParameterConstraints.First().BaseType);
     }
@@ -135,7 +135,7 @@ public class WeaverTests
     {
         var genericParameterConstraints = assembly.GetType("ClassWithMethodDelegateConstraint2")
             .GetMethods()
-            .First(x => x.Name == "Method")
+            .First(_ => _.Name == "Method")
             .GetGenericArguments();
         Assert.Equal(typeof(Func<int>), genericParameterConstraints.First().BaseType);
     }
@@ -145,7 +145,7 @@ public class WeaverTests
     {
         var genericParameterConstraints = assembly.GetType("InterfaceWithMethodDelegateConstraint")
             .GetMethods()
-            .First(x => x.Name == "Method")
+            .First(_ => _.Name == "Method")
             .GetGenericArguments();
         Assert.Equal(typeof(Delegate), genericParameterConstraints.First().BaseType);
     }
@@ -155,7 +155,7 @@ public class WeaverTests
     {
         var genericParameterConstraints = assembly.GetType("InterfaceWithMethodDelegateConstraint2")
             .GetMethods()
-            .First(x => x.Name == "Method")
+            .First(_ => _.Name == "Method")
             .GetGenericArguments();
         Assert.Equal(typeof(Func<int>), genericParameterConstraints.First().BaseType);
     }

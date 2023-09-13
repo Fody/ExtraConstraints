@@ -8,7 +8,7 @@ public class ModuleWeaver: BaseModuleWeaver
     public override void Execute()
     {
         var allTypes = ModuleDefinition.GetTypes()
-                                       .Where(x => x.IsClass || x.IsInterface)
+                                       .Where(_ => _.IsClass || x.IsInterface)
                                        .ToList();
         var genericParameterProcessor = new GenericParameterProcessor(this);
         foreach (var typeDefinition in allTypes)

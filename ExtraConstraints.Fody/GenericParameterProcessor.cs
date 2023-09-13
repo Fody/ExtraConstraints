@@ -21,7 +21,7 @@ public class GenericParameterProcessor
             return;
         }
         foreach (var parameter in provider.GenericParameters
-                                          .Where(x => x.HasCustomAttributes))
+                                          .Where(_ => _.HasCustomAttributes))
         {
             Process(parameter);
         }
