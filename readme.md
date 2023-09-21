@@ -5,6 +5,8 @@
 
 Facilitates adding constraints for Enum and Delegate to types and methods.
 
+**See [Milestones](../../milestones?state=closed) for release notes.**
+
 
 ### This is an add-in for [Fody](https://github.com/Fody/Home/)
 
