@@ -4,5 +4,6 @@
     <Version>1.14.0</Version>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>preview</LangVersion>
+    <ResolveAssemblyReferencesSilent>true</ResolveAssemblyReferencesSilent>
   </PropertyGroup>
 </Project>
