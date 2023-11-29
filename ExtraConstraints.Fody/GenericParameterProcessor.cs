@@ -20,8 +20,9 @@ public class GenericParameterProcessor
         {
             return;
         }
+
         foreach (var parameter in provider.GenericParameters
-                                          .Where(_ => _.HasCustomAttributes))
+                     .Where(_ => _.HasCustomAttributes))
         {
             Process(parameter);
         }
@@ -58,21 +59,18 @@ public class GenericParameterProcessor
                 attributes.RemoveAt(i--);
             }
         }
+
         if (hasDelegateConstraint && hasEnumConstraint)
         {
             throw new WeavingException("Cannot contain both [EnumConstraint] and [DelegateConstraint].");
         }
     }
 
-    static bool IsEnumConstraintAttribute(CustomAttribute attribute)
-    {
-        return attribute.AttributeType.Name == "EnumConstraintAttribute";
-    }
+    static bool IsEnumConstraintAttribute(CustomAttribute attribute) =>
+        attribute.AttributeType.Name == "EnumConstraintAttribute";
 
-    static bool IsDelegateConstraintAttribute(CustomAttribute attribute)
-    {
-        return attribute.AttributeType.Name == "DelegateConstraintAttribute";
-    }
+    static bool IsDelegateConstraintAttribute(CustomAttribute attribute) =>
+        attribute.AttributeType.Name == "DelegateConstraintAttribute";
 
     TypeReference GetEnumType(CustomAttribute attribute)
     {
@@ -86,6 +84,7 @@ public class GenericParameterProcessor
         {
             return typeReference;
         }
+
         var message = $"The type '{typeReference.FullName}' is not an enum type. Only enum types are permitted in an EnumConstraintAttribute.";
         throw new WeavingException(message);
     }
@@ -102,6 +101,7 @@ public class GenericParameterProcessor
         {
             return typeReference;
         }
+
         var message = $"The type '{typeReference.FullName}' is not a delegate type. Only delegate types are permitted in a DelegateConstraintAttribute.";
         throw new WeavingException(message);
     }
