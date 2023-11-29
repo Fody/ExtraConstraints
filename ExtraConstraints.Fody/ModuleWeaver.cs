@@ -7,7 +7,8 @@ public class ModuleWeaver: BaseModuleWeaver
 {
     public override void Execute()
     {
-        var allTypes = ModuleDefinition.GetTypes()
+        var allTypes = ModuleDefinition
+            .GetTypes()
                                        .Where(_ => _.IsClass ||
                                                    _.IsInterface)
                                        .ToList();
@@ -24,16 +25,14 @@ public class ModuleWeaver: BaseModuleWeaver
         RemoveAttributesTypes(allTypes);
     }
 
-    public override IEnumerable<string> GetAssembliesForScanning()
-    {
-        return Enumerable.Empty<string>();
-    }
+    public override IEnumerable<string> GetAssembliesForScanning() =>
+        Enumerable.Empty<string>();
 
     void RemoveAttributesTypes(List<TypeDefinition> allTypes)
     {
         foreach (var typeDefinition in allTypes
-            .Where(x =>
-                   x.Name is
+            .Where(_ =>
+                   _.Name is
                        "EnumConstraintAttribute" or
                        "DelegateConstraintAttribute").ToList())
         {
