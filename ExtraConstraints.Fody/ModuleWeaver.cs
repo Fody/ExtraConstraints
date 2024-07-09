@@ -3,15 +3,16 @@ using System.Linq;
 using Fody;
 using Mono.Cecil;
 
-public class ModuleWeaver: BaseModuleWeaver
+public class ModuleWeaver :
+    BaseModuleWeaver
 {
     public override void Execute()
     {
         var allTypes = ModuleDefinition
             .GetTypes()
-                                       .Where(_ => _.IsClass ||
-                                                   _.IsInterface)
-                                       .ToList();
+            .Where(_ => _.IsClass ||
+                        _.IsInterface)
+            .ToList();
         var genericParameterProcessor = new GenericParameterProcessor(this);
         foreach (var typeDefinition in allTypes)
         {
@@ -25,16 +26,15 @@ public class ModuleWeaver: BaseModuleWeaver
         RemoveAttributesTypes(allTypes);
     }
 
-    public override IEnumerable<string> GetAssembliesForScanning() =>
-        Enumerable.Empty<string>();
+    public override IEnumerable<string> GetAssembliesForScanning() => [];
 
     void RemoveAttributesTypes(List<TypeDefinition> allTypes)
     {
         foreach (var typeDefinition in allTypes
-            .Where(_ =>
-                   _.Name is
-                       "EnumConstraintAttribute" or
-                       "DelegateConstraintAttribute").ToList())
+                     .Where(_ =>
+                         _.Name is
+                             "EnumConstraintAttribute" or
+                             "DelegateConstraintAttribute").ToList())
         {
             ModuleDefinition.Types.Remove(typeDefinition);
         }
